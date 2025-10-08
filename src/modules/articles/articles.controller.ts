@@ -25,7 +25,7 @@ import { PaginationDto } from '@/common/dto/pagination.dto';
 import { Article } from './entities/article.entity';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-
+import { Express } from 'express';
 
 @Controller('articles')
 export class ArticlesController {
