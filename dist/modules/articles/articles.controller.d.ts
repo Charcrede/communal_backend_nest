@@ -10,7 +10,7 @@ export declare class ArticlesController {
     constructor(articlesService: ArticlesService, mediaService: MediaService);
     create(createArticleDto: CreateArticleDto, files: Express.Multer.File[], req: any): Promise<Article>;
     findAll(queryDto: ArticleQueryDto): Promise<import("@/common/dto/pagination.dto").PaginatedResult<Article>>;
-    search(query: string, page?: number, per_page?: number): Promise<import("@/common/dto/pagination.dto").PaginatedResult<Article>>;
+    search(search: string, page?: number, per_page?: number): Promise<import("@/common/dto/pagination.dto").PaginatedResult<Article>>;
     findByRubric(rubricId: string): Promise<Article[]>;
     findOne(id: string): Promise<Article>;
     update(id: string, updateArticleDto: UpdateArticleDto, req: any): Promise<Article>;

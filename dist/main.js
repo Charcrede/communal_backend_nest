@@ -63,7 +63,7 @@ async function bootstrap() {
     app.useGlobalFilters(new global_exception_filter_1.GlobalExceptionFilter());
     app.useGlobalInterceptors(new response_interceptor_1.ResponseInterceptor());
     app.enableCors({
-        origin: ['http://localhost:3001', 'http://localhost:3002', 'https://communal-info-web-tv.vercel.app', 'https://communal-admin.vercel.app/'],
+        origin: ['http://localhost:3001', 'http://localhost:3002', 'https://communal-info-web-tv.vercel.app', 'https://communal-admin.vercel.app'],
         credentials: true,
     });
     const dataSource = app.get(typeorm_1.DataSource);

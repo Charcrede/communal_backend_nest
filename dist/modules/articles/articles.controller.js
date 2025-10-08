@@ -54,8 +54,8 @@ let ArticlesController = class ArticlesController {
     async findAll(queryDto) {
         return this.articlesService.findAll(queryDto);
     }
-    search(query, page = 1, per_page = 10) {
-        return this.articlesService.search(query, +page, +per_page);
+    search(search, page = 1, per_page = 10) {
+        return this.articlesService.search(search, +page, +per_page);
     }
     findByRubric(rubricId) {
         return this.articlesService.findByRubric(rubricId);
@@ -100,7 +100,7 @@ __decorate([
 ], ArticlesController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)('search'),
-    __param(0, (0, common_1.Query)('query')),
+    __param(0, (0, common_1.Query)('search')),
     __param(1, (0, common_1.Query)('page')),
     __param(2, (0, common_1.Query)('per_page')),
     __metadata("design:type", Function),

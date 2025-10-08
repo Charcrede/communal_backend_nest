@@ -20,5 +20,5 @@ export class ArticleQueryDto extends PaginationDto {
 
   @IsOptional()
   @IsString()
-  query?: string;
+  search?: string;
 }

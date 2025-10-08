@@ -84,11 +84,11 @@ async findAll(@Query() queryDto: ArticleQueryDto) {
 
   @Get('search')
   search(
-    @Query('query') query: string,
+    @Query('search') search: string,
     @Query('page') page = 1,
     @Query('per_page') per_page = 10,
   ) {
-    return this.articlesService.search(query, +page, +per_page);
+    return this.articlesService.search(search, +page, +per_page);
   }
 
   @Get('by-rubric/:rubricId')

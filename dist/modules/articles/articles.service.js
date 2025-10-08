@@ -32,7 +32,7 @@ let ArticlesService = class ArticlesService {
         return this.articlesRepository.save(article);
     }
     async findAll(queryDto) {
-        const { page = 1, per_page = 10, rubric, rubric_id, exclude_rubric, exclude_rubric_id, query } = queryDto;
+        const { page = 1, per_page = 10, rubric, rubric_id, exclude_rubric, exclude_rubric_id, search } = queryDto;
         const queryBuilder = this.articlesRepository
             .createQueryBuilder('article')
             .leftJoinAndSelect('article.rubric', 'rubric')
@@ -50,8 +50,8 @@ let ArticlesService = class ArticlesService {
         else if (exclude_rubric) {
             queryBuilder.andWhere('rubric.slug != :exclude_rubric', { exclude_rubric });
         }
-        if (query) {
-            queryBuilder.andWhere('(article.title LIKE :query OR article.content LIKE :query)', { query: `%${query}%` });
+        if (search) {
+            queryBuilder.andWhere('(article.title ILIKE :search OR article.content ILIKE :search)', { search: `%${search}%` });
         }
         queryBuilder.orderBy('article.created_at', 'DESC');
         const total = await queryBuilder.getCount();

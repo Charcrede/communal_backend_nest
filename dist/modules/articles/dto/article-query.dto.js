@@ -39,5 +39,5 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], ArticleQueryDto.prototype, "query", void 0);
+], ArticleQueryDto.prototype, "search", void 0);
 //# sourceMappingURL=article-query.dto.js.map

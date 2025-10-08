@@ -12,7 +12,7 @@ let SuperAdminGuard = class SuperAdminGuard {
     canActivate(context) {
         const request = context.switchToHttp().getRequest();
         const user = request.user;
-        if (user?.type !== 'super_admin') {
+        if (user?.role !== 'super_admin') {
             throw new common_1.ForbiddenException('Super admin access required');
         }
         return true;

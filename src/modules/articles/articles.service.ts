@@ -29,7 +29,7 @@ export class ArticlesService {
   }
 
   async findAll(queryDto: ArticleQueryDto): Promise<PaginatedResult<Article>> {
-    const { page = 1, per_page = 10, rubric, rubric_id, exclude_rubric, exclude_rubric_id, query } = queryDto;
+    const { page = 1, per_page = 10, rubric, rubric_id, exclude_rubric, exclude_rubric_id, search } = queryDto;
 
     const queryBuilder = this.articlesRepository
       .createQueryBuilder('article')
@@ -52,10 +52,10 @@ export class ArticlesService {
     }
 
     // Recherche textuelle
-    if (query) {
+    if (search) {
       queryBuilder.andWhere(
-        '(article.title LIKE :query OR article.content LIKE :query)',
-        { query: `%${query}%` }
+        '(article.title ILIKE :search OR article.content ILIKE :search)',
+        { search: `%${search}%` }
       );
     }
 

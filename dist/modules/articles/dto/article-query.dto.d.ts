@@ -4,5 +4,5 @@ export declare class ArticleQueryDto extends PaginationDto {
     rubric_id?: string;
     exclude_rubric?: string;
     exclude_rubric_id?: string;
-    query?: string;
+    search?: string;
 }
