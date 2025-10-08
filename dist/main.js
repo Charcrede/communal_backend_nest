@@ -41,8 +41,6 @@ const global_exception_filter_1 = require("./common/filters/global-exception.fil
 const response_interceptor_1 = require("./common/interceptors/response.interceptor");
 const swagger_1 = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
-const admin_entity_1 = require("./modules/admins/entities/admin.entity");
-const bcrypt = __importStar(require("bcrypt"));
 const express = __importStar(require("express"));
 const path_1 = require("path");
 async function bootstrap() {
@@ -65,22 +63,10 @@ async function bootstrap() {
     app.useGlobalFilters(new global_exception_filter_1.GlobalExceptionFilter());
     app.useGlobalInterceptors(new response_interceptor_1.ResponseInterceptor());
     app.enableCors({
-        origin: ['http://localhost:3001', 'http://localhost:3002'],
+        origin: ['http://localhost:3001', 'http://localhost:3002', 'https://communal-info-web-tv.vercel.app', 'https://communal-admin.vercel.app/'],
         credentials: true,
     });
     const dataSource = app.get(typeorm_1.DataSource);
-    const adminRepo = dataSource.getRepository(admin_entity_1.Admin);
-    const count = await adminRepo.count();
-    if (count === 0) {
-        const admin = adminRepo.create({
-            name: 'Super Admin',
-            email: 'admin@communal.com',
-            password: await bcrypt.hash('password123', 10),
-            role: admin_entity_1.AdminRole.SUPER_ADMIN,
-        });
-        await adminRepo.save(admin);
-        console.log('✅ Admin par défaut créé : admin@communal.com / password123');
-    }
     const port = configService.get('PORT') || 3000;
     await app.listen(port);
     console.log(`🚀 Server running on http://localhost:${port}`);
