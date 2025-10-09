@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var ArticlesController_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArticlesController = void 0;
 const common_1 = require("@nestjs/common");
@@ -25,16 +26,24 @@ const media_service_1 = require("../media/media.service");
 const media_entity_1 = require("../media/entities/media.entity");
 const multer_1 = require("multer");
 const path_1 = require("path");
-let ArticlesController = class ArticlesController {
+const fs_1 = require("fs");
+const cloudinary_1 = require("cloudinary");
+let ArticlesController = ArticlesController_1 = class ArticlesController {
     constructor(articlesService, mediaService) {
         this.articlesService = articlesService;
         this.mediaService = mediaService;
+        this.logger = new common_1.Logger(ArticlesController_1.name);
     }
     async create(createArticleDto, files, req) {
+        cloudinary_1.v2.config({
+            cloud_name: 'deh7gkg1l',
+            api_key: '113828242843515',
+            api_secret: 'M7RcCpvbJGzxOGmqoY_U7r79t3M'
+        });
         const article = await this.articlesService.create(createArticleDto, req.user.id);
         if (files && files.length > 0) {
             for (const file of files) {
-                await this.mediaService.create({
+                const media = await this.mediaService.create({
                     title: file.originalname,
                     description: '',
                     type: file.mimetype.startsWith('image/')
@@ -47,6 +56,19 @@ let ArticlesController = class ArticlesController {
                     size: file.size,
                     article_id: article.id,
                 });
+                try {
+                    const filePath = (0, path_1.join)(process.cwd(), 'uploads', file.filename);
+                    const uploadResult = await cloudinary_1.v2.uploader.upload(filePath, {
+                        folder: 'articles',
+                        resource_type: 'auto',
+                        public_id: media.filename.split('.')[0],
+                    });
+                    await this.mediaService.updateUrl(media.id, uploadResult.secure_url);
+                    await fs_1.promises.unlink((0, path_1.join)(process.cwd(), 'uploads', file.filename));
+                }
+                catch (error) {
+                    this.logger.error(`Erreur Cloudinary pour le fichier ${file.filename}`, error);
+                }
             }
         }
         return this.articlesService.findOne(article.id);
@@ -83,6 +105,7 @@ __decorate([
                 callback(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
             },
         }),
+        limits: { fileSize: 10 * 1024 * 1024 },
     })),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.UploadedFiles)()),
@@ -140,7 +163,7 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], ArticlesController.prototype, "remove", null);
-exports.ArticlesController = ArticlesController = __decorate([
+exports.ArticlesController = ArticlesController = ArticlesController_1 = __decorate([
     (0, common_1.Controller)('articles'),
     __metadata("design:paramtypes", [articles_service_1.ArticlesService,
         media_service_1.MediaService])

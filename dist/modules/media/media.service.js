@@ -33,6 +33,14 @@ let MediaService = class MediaService {
             order: { created_at: 'DESC' },
         });
     }
+    async updateUrl(id, url) {
+        const media = await this.mediaRepository.findOne({ where: { id } });
+        if (!media) {
+            throw new common_1.NotFoundException(`Media with id ${id} not found`);
+        }
+        media.url = url;
+        return this.mediaRepository.save(media);
+    }
     async findOne(id) {
         const media = await this.mediaRepository.findOne({
             where: { id },

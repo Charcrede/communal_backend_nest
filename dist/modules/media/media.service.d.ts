@@ -7,6 +7,7 @@ export declare class MediaService {
     constructor(mediaRepository: Repository<Media>);
     create(createMediaDto: CreateMediaDto): Promise<Media>;
     findAll(): Promise<Media[]>;
+    updateUrl(id: string, url: string): Promise<Media>;
     findOne(id: string): Promise<Media>;
     update(id: string, updateMediaDto: UpdateMediaDto): Promise<Media>;
     remove(id: string): Promise<void>;

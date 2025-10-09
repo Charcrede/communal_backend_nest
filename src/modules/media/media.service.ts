@@ -26,6 +26,16 @@ export class MediaService {
     });
   }
 
+    async updateUrl(id: string, url: string): Promise<Media> {
+      const media = await this.mediaRepository.findOne({ where: { id } });
+      if (!media) {
+        throw new NotFoundException(`Media with id ${id} not found`);
+      }
+  
+      media.url = url;
+      return this.mediaRepository.save(media);
+    }
+
   async findOne(id: string): Promise<Media> {
     const media = await this.mediaRepository.findOne({
       where: { id },
