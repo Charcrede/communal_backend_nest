@@ -25,14 +25,10 @@ export class ArticleSeeder {
     }
 
     const mediaFiles = [
-      "image1.jpg",
-      "image2.jpg",
-      "image3.jpg",
-      "image4.jpg",
-      "video1.mp4",
-      "video2.mp4",
-      "video3.mp4",
-      "video4.mp4",
+      "https://res.cloudinary.com/deh7gkg1l/image/upload/v1760049733/articles/files-1760049730169-476913983.jpg",
+      "https://res.cloudinary.com/deh7gkg1l/image/upload/v1760049648/articles/files-1760049645958-620652665.jpg",
+      "https://res.cloudinary.com/deh7gkg1l/image/upload/v1760049648/articles/files-1760049645958-620652665.jpg",
+      "https://res.cloudinary.com/deh7gkg1l/video/upload/v1760049215/articles/files-1760049199561-827404564.mp4",
     ];
 
     const titles = [
@@ -69,7 +65,7 @@ export class ArticleSeeder {
           description: `Un média pour ${title}`,
           type,
           filename: fileName,
-          url: `/uploads/${fileName}`,
+          url: `${fileName}`,
           size: Math.floor(Math.random() * (500000 - 50000) + 50000),
         }),
       );

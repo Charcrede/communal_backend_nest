@@ -33,14 +33,10 @@ let ArticleSeeder = ArticleSeeder_1 = class ArticleSeeder {
             return;
         }
         const mediaFiles = [
-            "image1.jpg",
-            "image2.jpg",
-            "image3.jpg",
-            "image4.jpg",
-            "video1.mp4",
-            "video2.mp4",
-            "video3.mp4",
-            "video4.mp4",
+            "https://res.cloudinary.com/deh7gkg1l/image/upload/v1760049733/articles/files-1760049730169-476913983.jpg",
+            "https://res.cloudinary.com/deh7gkg1l/image/upload/v1760049648/articles/files-1760049645958-620652665.jpg",
+            "https://res.cloudinary.com/deh7gkg1l/image/upload/v1760049648/articles/files-1760049645958-620652665.jpg",
+            "https://res.cloudinary.com/deh7gkg1l/video/upload/v1760049215/articles/files-1760049199561-827404564.mp4",
         ];
         const titles = [
             'Les bienfaits de la méditation quotidienne', 'Comment cuisiner un plat marocain traditionnel', 'Les tendances mode 2025', 'Astuces pour économiser sur ses factures', 'Top 10 des destinations de voyage en été', 'L’importance de l’hydratation pour la santé', 'Le guide complet du potager bio', 'Comment bien débuter en photographie', 'Les erreurs à éviter lors d’un entretien d’embauche', 'Recette facile de pain maison', 'Les bases du développement web', 'Comment organiser un événement réussi', 'Les secrets d’un sommeil réparateur', 'Initiation au yoga pour débutants', 'La transition vers l’énergie solaire', 'Les aliments à privilégier pour la mémoire', 'Comment créer un budget mensuel efficace', 'Idées de décoration intérieure modernes', 'Les avantages du télétravail', 'Le guide du café parfait'
@@ -68,7 +64,7 @@ let ArticleSeeder = ArticleSeeder_1 = class ArticleSeeder {
                 description: `Un média pour ${title}`,
                 type,
                 filename: fileName,
-                url: `/uploads/${fileName}`,
+                url: `${fileName}`,
                 size: Math.floor(Math.random() * (500000 - 50000) + 50000),
             }));
         }
