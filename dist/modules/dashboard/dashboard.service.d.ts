@@ -10,37 +10,38 @@ export declare class DashboardService {
     private readonly adminRepository;
     constructor(rubricRepository: Repository<Rubric>, articleRepository: Repository<Article>, mediaRepository: Repository<Media>, adminRepository: Repository<Admin>);
     getSuperDashboard(): Promise<{
-        lastUpdate: Date;
         overview: {
-            rubrics: {
-                total: number;
-            };
-            articles: {
-                total: number;
-            };
-            medias: {
-                total: number;
-            };
-            admins: {
-                total: number;
-            };
-        };
-        recentActivity: {
-            articles: Article[];
-            rubrics: Rubric[];
-            medias: Media[];
-            admins: Admin[];
+            counts: ({
+                title: string;
+                value: number;
+                change: string;
+                icon: string;
+                color: string;
+                trend?: undefined;
+            } | {
+                title: string;
+                value: number;
+                change: string;
+                trend: string;
+                icon: string;
+                color: string;
+            })[];
+            lasts: {
+                title: string;
+                type: string;
+                action: string;
+                time: Date;
+            }[];
         };
     }>;
     getAdminDashboard(adminId: string): Promise<{
         lastUpdate: Date;
         overview: {
-            articles: {
+            myArticles: {
                 total: number;
+                last: Article;
             };
-        };
-        recentActivity: {
-            articles: Article[];
+            lastMedia: Media;
         };
     }>;
 }

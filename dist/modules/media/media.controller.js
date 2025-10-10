@@ -87,7 +87,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], MediaController.prototype, "remove", null);
 exports.MediaController = MediaController = __decorate([
-    (0, common_1.Controller)('media'),
+    (0, common_1.Controller)('medias'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, admin_role_guard_1.AdminRoleGuard),
     __metadata("design:paramtypes", [media_service_1.MediaService])
 ], MediaController);

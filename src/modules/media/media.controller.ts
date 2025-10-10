@@ -18,7 +18,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { AdminRoleGuard } from '../auth/guards/admin-role.guard';
 import { MediaType } from './entities/media.entity';
 
-@Controller('media')
+@Controller('medias')
 @UseGuards(JwtAuthGuard, AdminRoleGuard)
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
