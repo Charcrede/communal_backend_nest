@@ -38,10 +38,10 @@ export class SeederService {
     if (superAdmin) {
       this.logger.log('Super admin déjà présent ✅');
     } else {
-      const hashedPassword = await bcrypt.hash('Malfrick10@', 10);
+      const hashedPassword = await bcrypt.hash('Testing10@', 10);
 
       const newSuperAdmin = this.adminRepository.create({
-        name: 'Malfrick Djeklounon',
+        name: 'Charcre-bailse Kingnon',
         email,
         password: hashedPassword,
         role: AdminRole.SUPER_ADMIN,

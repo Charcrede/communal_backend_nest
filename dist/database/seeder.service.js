@@ -73,9 +73,9 @@ let SeederService = SeederService_1 = class SeederService {
             this.logger.log('Super admin déjà présent ✅');
         }
         else {
-            const hashedPassword = await bcrypt.hash('Malfrick10@', 10);
+            const hashedPassword = await bcrypt.hash('Testing10@', 10);
             const newSuperAdmin = this.adminRepository.create({
-                name: 'Malfrick Djeklounon',
+                name: 'Charcre-bailse Kingnon',
                 email,
                 password: hashedPassword,
                 role: admin_entity_1.AdminRole.SUPER_ADMIN,
