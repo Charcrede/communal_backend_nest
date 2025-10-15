@@ -8,12 +8,13 @@ import { Rubric } from "./modules/rubrics/entities/rubric.entity";
 
 export const AppDataSource = new DataSource({
     type: "postgres",
-    host: "localhost",
-    port: 5432,
-    username: "postgres",
-    password: "root",        // ton mot de passe PG
-    database: "communal",
+    host: process.env.DATABASE_HOST,
+    port: Number(process.env.DATABASE_PORT),
+    username: process.env.DATABASE_USERNAME,
+    password: `${process.env.DATABASE_PASSWORD}`,
+    database: process.env.DATABASE_NAME,
     entities: [Admin, User, Article, Media, Rubric],
-    synchronize: true,       // ⚠️ ça crée direct les tables, pas besoin de migrations
-    logging: false
+    synchronize: false,
+    logging: false,
+    migrations: ["src/migrations/*.ts"],
 });
