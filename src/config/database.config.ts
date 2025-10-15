@@ -27,7 +27,7 @@ export class DatabaseConfig implements TypeOrmOptionsFactory {
       password: this.configService.get<string>('DATABASE_PASSWORD'),
       database: this.configService.get<string>('DATABASE_NAME'),
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-      synchronize: true,
+      synchronize: false,
       logging: true,
     };
   }
