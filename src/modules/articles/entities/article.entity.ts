@@ -15,6 +15,9 @@ export class Article extends BaseEntity {
   @Column('uuid')
   rubric_id: string;
 
+  @Column({ length: 255 })
+  head: string;
+
   @Column('uuid')
   created_by: string;
 

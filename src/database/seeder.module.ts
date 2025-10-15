@@ -7,6 +7,8 @@ import { Article } from '@/modules/articles/entities/article.entity';
 import { RubricSeeder } from './seeders/rubric.seeder';
 import { ArticleSeeder } from './seeders/article.seeder';
 import { Media } from '@/modules/media/entities/media.entity';
+import { MediaSeeder } from './seeders/media.seeder';
+import { MediaService } from '@/modules/media/media.service';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { Media } from '@/modules/media/entities/media.entity';
     SeederService,
     RubricSeeder,
     ArticleSeeder,
+    MediaSeeder,
+    MediaService,
   ],
   exports: [SeederService],
 })

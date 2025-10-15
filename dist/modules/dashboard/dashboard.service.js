@@ -152,23 +152,103 @@ let DashboardService = class DashboardService {
         };
     }
     async getAdminDashboard(adminId) {
-        const myArticlesCount = await this.articleRepository.count({
-            where: { creator: { id: adminId } },
-        });
-        const lastMyArticle = await this.articleRepository.findOne({
+        const now = new Date();
+        const startOfThisWeek = (0, date_fns_1.startOfWeek)(now, { weekStartsOn: 1 });
+        const startOfLastWeek = (0, date_fns_1.subWeeks)(startOfThisWeek, 1);
+        const endOfLastWeek = (0, date_fns_1.endOfWeek)(startOfLastWeek, { weekStartsOn: 1 });
+        const [articlesCount, mediasCount] = await Promise.all([
+            this.articleRepository.count({ where: { creator: { id: adminId } } }),
+            this.mediaRepository.count({ where: { creator: { id: adminId } } }),
+        ]);
+        const [articlesThisWeek, articlesLastWeek, mediasThisWeek, mediasLastWeek] = await Promise.all([
+            this.articleRepository.count({
+                where: {
+                    creator: { id: adminId },
+                    created_at: (0, typeorm_3.MoreThanOrEqual)(startOfThisWeek),
+                },
+            }),
+            this.articleRepository.count({
+                where: {
+                    creator: { id: adminId },
+                    created_at: (0, typeorm_3.Between)(startOfLastWeek, endOfLastWeek),
+                },
+            }),
+            this.mediaRepository.count({
+                where: {
+                    creator: { id: adminId },
+                    created_at: (0, typeorm_3.MoreThanOrEqual)(startOfThisWeek),
+                },
+            }),
+            this.mediaRepository.count({
+                where: {
+                    creator: { id: adminId },
+                    created_at: (0, typeorm_3.Between)(startOfLastWeek, endOfLastWeek),
+                },
+            }),
+        ]);
+        const getTrend = (thisWeek, lastWeek) => {
+            if (thisWeek > lastWeek)
+                return 'increase';
+            if (thisWeek < lastWeek)
+                return 'decrease';
+            return 'same';
+        };
+        const articlesTrend = getTrend(articlesThisWeek, articlesLastWeek);
+        const mediasTrend = getTrend(mediasThisWeek, mediasLastWeek);
+        const recentArticles = await this.articleRepository.find({
             where: { creator: { id: adminId } },
             order: { created_at: 'DESC' },
+            take: 3,
             select: ['id', 'title', 'created_at'],
         });
-        const lastMedia = await this.mediaRepository.findOne({
+        const recentMedias = await this.mediaRepository.find({
+            where: { creator: { id: adminId } },
             order: { created_at: 'DESC' },
-            select: ['id', 'description', 'url'],
+            take: 3,
+            select: ['id', 'description', 'url', 'created_at'],
         });
         return {
-            lastUpdate: new Date(),
             overview: {
-                myArticles: { total: myArticlesCount, last: lastMyArticle },
-                lastMedia,
+                counts: [
+                    {
+                        title: "Articles",
+                        value: articlesCount,
+                        change: articlesTrend === 'increase'
+                            ? `+${articlesThisWeek - articlesLastWeek} cette semaine`
+                            : articlesTrend === 'decrease'
+                                ? `-${articlesLastWeek - articlesThisWeek} cette semaine`
+                                : "Stable",
+                        trend: articlesTrend,
+                        icon: 'FileText',
+                        color: "text-green-600 bg-green-100",
+                    },
+                    {
+                        title: "Médias",
+                        value: mediasCount,
+                        change: mediasTrend === 'increase'
+                            ? `+${mediasThisWeek - mediasLastWeek} cette semaine`
+                            : mediasTrend === 'decrease'
+                                ? `-${mediasLastWeek - mediasThisWeek} cette semaine`
+                                : "Stable",
+                        trend: mediasTrend,
+                        icon: 'Image',
+                        color: "text-purple-600 bg-purple-100",
+                    },
+                ],
+                recent: [
+                    ...recentArticles.map(a => ({
+                        title: a.title,
+                        type: "article",
+                        action: "Article créé",
+                        time: a.created_at,
+                    })),
+                    ...recentMedias.map(m => ({
+                        title: m.description,
+                        type: "media",
+                        action: "Média ajouté",
+                        time: m.created_at,
+                    })),
+                ],
             },
         };
     }

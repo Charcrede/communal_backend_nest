@@ -13,6 +13,7 @@ exports.Admin = exports.AdminRole = void 0;
 const typeorm_1 = require("typeorm");
 const base_entity_1 = require("../../../common/entities/base.entity");
 const article_entity_1 = require("../../articles/entities/article.entity");
+const media_entity_1 = require("../../media/entities/media.entity");
 var AdminRole;
 (function (AdminRole) {
     AdminRole["ADMIN"] = "admin";
@@ -51,6 +52,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => article_entity_1.Article, (article) => article.creator),
     __metadata("design:type", Array)
 ], Admin.prototype, "articles", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => media_entity_1.Media, (media) => media.creator),
+    __metadata("design:type", Array)
+], Admin.prototype, "medias", void 0);
 exports.Admin = Admin = __decorate([
     (0, typeorm_1.Entity)('admins')
 ], Admin);

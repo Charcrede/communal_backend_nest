@@ -7,12 +7,14 @@ import { UpdateArticleDto } from './dto/update-article.dto';
 import { ArticleQueryDto } from './dto/article-query.dto';
 import { PaginatedResult } from '@/common/dto/pagination.dto';
 import { RubricsService } from '../rubrics/rubrics.service';
+import { MediaService } from '../media/media.service';
 
 @Injectable()
 export class ArticlesService {
   constructor(
     @InjectRepository(Article)
     private articlesRepository: Repository<Article>,
+    private mediaService: MediaService,
     private rubricsService: RubricsService,
   ) {}
 
@@ -120,12 +122,20 @@ export class ArticlesService {
   }
 
 
+  async findByTitle(title: string): Promise<Article|null> {
+    return this.articlesRepository.findOne({
+      where: { title: title },
+      relations: ['rubric', 'creator', 'media'],
+    });
+  }
+
+
 
   async update(id: string, updateArticleDto: UpdateArticleDto, userId: string): Promise<Article> {
     const article = await this.findOne(id);
 
     if (article.created_by !== userId) {
-      throw new ForbiddenException('You can only update your own articles');
+      throw new ForbiddenException('Vous pouvez seulement modifier vos propres articles');
     }
 
     if (updateArticleDto.rubric_id) {
@@ -139,9 +149,13 @@ export class ArticlesService {
   async remove(id: string, userId: string): Promise<void> {
     const article = await this.findOne(id);
 
+
+
     if (article.created_by !== userId) {
-      throw new ForbiddenException('You can only delete your own articles');
+      throw new ForbiddenException('Vous pouvez seulement supprimer vos propres articles');
     }
+
+    await this.mediaService.removeByArticleId(article.id);
 
     const result = await this.articlesRepository.delete(id);
     if (result.affected === 0) {

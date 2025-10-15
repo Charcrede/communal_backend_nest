@@ -35,13 +35,21 @@ export declare class DashboardService {
         };
     }>;
     getAdminDashboard(adminId: string): Promise<{
-        lastUpdate: Date;
         overview: {
-            myArticles: {
-                total: number;
-                last: Article;
-            };
-            lastMedia: Media;
+            counts: {
+                title: string;
+                value: number;
+                change: string;
+                trend: string;
+                icon: string;
+                color: string;
+            }[];
+            recent: {
+                title: string;
+                type: string;
+                action: string;
+                time: Date;
+            }[];
         };
     }>;
 }

@@ -5,10 +5,16 @@ export class CreateArticleDto {
   @IsNotEmpty()
   @MaxLength(255)
   title: string;
-
+  
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(255)
+  head: string;
+  
   @IsString()
   @IsNotEmpty()
   content: string;
+
 
   @IsUUID()
   @IsNotEmpty()

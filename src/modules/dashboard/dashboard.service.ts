@@ -167,32 +167,117 @@ export class DashboardService {
 
 
 
-  // 🟦 Vue d’un admin normal : ses propres stats
   async getAdminDashboard(adminId: string) {
-    // Total d'articles créés par cet admin
-    const myArticlesCount = await this.articleRepository.count({
-      where: { creator: { id: adminId } },
-    });
+  const now = new Date();
+  const startOfThisWeek = startOfWeek(now, { weekStartsOn: 1 });
+  const startOfLastWeek = subWeeks(startOfThisWeek, 1);
+  const endOfLastWeek = endOfWeek(startOfLastWeek, { weekStartsOn: 1 });
 
-    // Dernier article qu’il a publié
-    const lastMyArticle = await this.articleRepository.findOne({
-      where: { creator: { id: adminId } },
-      order: { created_at: 'DESC' },
-      select: ['id', 'title', 'created_at'],
-    });
+  // === COUNTS ===
+  const [articlesCount, mediasCount] = await Promise.all([
+    this.articleRepository.count({ where: { creator: { id: adminId } } }),
+    this.mediaRepository.count({ where: { creator: { id: adminId } } }),
+  ]);
 
-    // Dernier média du système (utile pour affichage visuel global)
-    const lastMedia = await this.mediaRepository.findOne({
-      order: { created_at: 'DESC' },
-      select: ['id', 'description', 'url'],
-    });
-
-    return {
-      lastUpdate: new Date(),
-      overview: {
-        myArticles: { total: myArticlesCount, last: lastMyArticle },
-        lastMedia, // tu peux le virer si tu veux une vue 100 % perso
+  // === WEEKLY COUNTS ===
+  const [articlesThisWeek, articlesLastWeek, mediasThisWeek, mediasLastWeek] = await Promise.all([
+    this.articleRepository.count({
+      where: {
+        creator: { id: adminId },
+        created_at: MoreThanOrEqual(startOfThisWeek),
       },
-    };
-  }
+    }),
+    this.articleRepository.count({
+      where: {
+        creator: { id: adminId },
+        created_at: Between(startOfLastWeek, endOfLastWeek),
+      },
+    }),
+    this.mediaRepository.count({
+      where: {
+        creator: { id: adminId },
+        created_at: MoreThanOrEqual(startOfThisWeek),
+      },
+    }),
+    this.mediaRepository.count({
+      where: {
+        creator: { id: adminId },
+        created_at: Between(startOfLastWeek, endOfLastWeek),
+      },
+    }),
+  ]);
+
+  const getTrend = (thisWeek: number, lastWeek: number) => {
+    if (thisWeek > lastWeek) return 'increase';
+    if (thisWeek < lastWeek) return 'decrease';
+    return 'same';
+  };
+
+  const articlesTrend = getTrend(articlesThisWeek, articlesLastWeek);
+  const mediasTrend = getTrend(mediasThisWeek, mediasLastWeek);
+
+  // === RECENT ACTIONS ===
+  const recentArticles = await this.articleRepository.find({
+    where: { creator: { id: adminId } },
+    order: { created_at: 'DESC' },
+    take: 3,
+    select: ['id', 'title', 'created_at'],
+  });
+
+  const recentMedias = await this.mediaRepository.find({
+    where: { creator: { id: adminId } },
+    order: { created_at: 'DESC' },
+    take: 3,
+    select: ['id', 'description', 'url', 'created_at'],
+  });
+
+  // === RESULT ===
+  return {
+    overview: {
+      counts: [
+        {
+          title: "Articles",
+          value: articlesCount,
+          change:
+            articlesTrend === 'increase'
+              ? `+${articlesThisWeek - articlesLastWeek} cette semaine`
+              : articlesTrend === 'decrease'
+              ? `-${articlesLastWeek - articlesThisWeek} cette semaine`
+              : "Stable",
+          trend: articlesTrend,
+          icon: 'FileText',
+          color: "text-green-600 bg-green-100",
+        },
+        {
+          title: "Médias",
+          value: mediasCount,
+          change:
+            mediasTrend === 'increase'
+              ? `+${mediasThisWeek - mediasLastWeek} cette semaine`
+              : mediasTrend === 'decrease'
+              ? `-${mediasLastWeek - mediasThisWeek} cette semaine`
+              : "Stable",
+          trend: mediasTrend,
+          icon: 'Image',
+          color: "text-purple-600 bg-purple-100",
+        },
+      ],
+      recent: [
+        ...recentArticles.map(a => ({
+          title: a.title,
+          type: "article",
+          action: "Article créé",
+          time: a.created_at,
+        })),
+        ...recentMedias.map(m => ({
+          title: m.description,
+          type: "media",
+          action: "Média ajouté",
+          time: m.created_at,
+        })),
+      ],
+    },
+  };
+}
+
 }

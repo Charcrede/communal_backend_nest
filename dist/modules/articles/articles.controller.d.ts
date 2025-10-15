@@ -12,6 +12,7 @@ export declare class ArticlesController {
     findAll(queryDto: ArticleQueryDto): Promise<import("../../common/dto/pagination.dto").PaginatedResult<import("./entities/article.entity").Article>>;
     search(search: string, page?: number, per_page?: number): Promise<import("../../common/dto/pagination.dto").PaginatedResult<import("./entities/article.entity").Article>>;
     findByRubric(rubricId: string): Promise<import("./entities/article.entity").Article[]>;
+    findByTitle(title: string): Promise<import("./entities/article.entity").Article>;
     findOne(id: string): Promise<import("./entities/article.entity").Article>;
     update(id: string, updateArticleDto: UpdateArticleDto, req: any): Promise<import("./entities/article.entity").Article>;
     remove(id: string, req: any): Promise<void>;

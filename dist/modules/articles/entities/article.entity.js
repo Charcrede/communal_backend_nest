@@ -31,6 +31,10 @@ __decorate([
     __metadata("design:type", String)
 ], Article.prototype, "rubric_id", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ length: 255 }),
+    __metadata("design:type", String)
+], Article.prototype, "head", void 0);
+__decorate([
     (0, typeorm_1.Column)('uuid'),
     __metadata("design:type", String)
 ], Article.prototype, "created_by", void 0);

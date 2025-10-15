@@ -6,6 +6,7 @@ export declare class Article extends BaseEntity {
     title: string;
     content: string;
     rubric_id: string;
+    head: string;
     created_by: string;
     rubric: Rubric;
     creator: Admin;

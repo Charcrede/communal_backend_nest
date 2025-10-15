@@ -23,8 +23,8 @@ let MediaService = class MediaService {
     constructor(mediaRepository) {
         this.mediaRepository = mediaRepository;
     }
-    async create(createMediaDto) {
-        const media = this.mediaRepository.create(createMediaDto);
+    async create(createMediaDto, createdBy) {
+        const media = this.mediaRepository.create({ ...createMediaDto, created_by: createdBy });
         return this.mediaRepository.save(media);
     }
     async findAll() {
@@ -40,6 +40,42 @@ let MediaService = class MediaService {
         }
         media.url = url;
         return this.mediaRepository.save(media);
+    }
+    async search(query, page = 1, per_page = 10) {
+        const [medias, total] = await this.mediaRepository.findAndCount({
+            where: [
+                { title: (0, typeorm_2.Like)(`%${query}%`) },
+                { description: (0, typeorm_2.Like)(`%${query}%`) },
+            ],
+            relations: ['creator'],
+            order: { created_at: 'DESC' },
+            skip: (page - 1) * per_page,
+            take: per_page,
+        });
+        return {
+            data: medias,
+            total,
+            page,
+            per_page,
+            total_pages: Math.ceil(total / per_page),
+        };
+    }
+    async findUnlinked(page = 1, per_page = 10) {
+        const [data, total] = await this.mediaRepository.findAndCount({
+            where: { article: (0, typeorm_2.IsNull)() },
+            order: { created_at: 'DESC' },
+            relations: ['creator'],
+            skip: (page - 1) * per_page,
+            take: per_page,
+        });
+        return {
+            data,
+            meta: {
+                total,
+                page,
+                lastPage: Math.ceil(total / per_page),
+            },
+        };
     }
     async findOne(id) {
         const media = await this.mediaRepository.findOne({
@@ -69,6 +105,11 @@ let MediaService = class MediaService {
         if (result.affected === 0) {
             throw new common_1.NotFoundException('Media not found');
         }
+    }
+    removeByArticleId(articleId) {
+        return this.mediaRepository
+            .delete({ article: { id: articleId } })
+            .then(() => undefined);
     }
 };
 exports.MediaService = MediaService;

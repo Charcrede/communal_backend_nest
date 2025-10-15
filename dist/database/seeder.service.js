@@ -54,11 +54,13 @@ const bcrypt = __importStar(require("bcrypt"));
 const admin_entity_1 = require("../modules/admins/entities/admin.entity");
 const rubric_seeder_1 = require("./seeders/rubric.seeder");
 const article_seeder_1 = require("./seeders/article.seeder");
+const media_seeder_1 = require("./seeders/media.seeder");
 let SeederService = SeederService_1 = class SeederService {
-    constructor(adminRepository, rubricSeeder, articleSeeder) {
+    constructor(adminRepository, rubricSeeder, articleSeeder, mediaSeeder) {
         this.adminRepository = adminRepository;
         this.rubricSeeder = rubricSeeder;
         this.articleSeeder = articleSeeder;
+        this.mediaSeeder = mediaSeeder;
         this.logger = new common_1.Logger(SeederService_1.name);
     }
     async seed() {
@@ -85,6 +87,7 @@ let SeederService = SeederService_1 = class SeederService {
         }
         const rubrics = await this.rubricSeeder.seed();
         await this.articleSeeder.seed(rubrics, superAdmin.id);
+        await this.mediaSeeder.seed(superAdmin.id);
         this.logger.log('Articles seedés avec succès ✨');
     }
 };
@@ -94,6 +97,7 @@ exports.SeederService = SeederService = SeederService_1 = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(admin_entity_1.Admin)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
         rubric_seeder_1.RubricSeeder,
-        article_seeder_1.ArticleSeeder])
+        article_seeder_1.ArticleSeeder,
+        media_seeder_1.MediaSeeder])
 ], SeederService);
 //# sourceMappingURL=seeder.service.js.map

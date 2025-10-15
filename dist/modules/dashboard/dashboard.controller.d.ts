@@ -28,13 +28,21 @@ export declare class DashboardController {
         };
     }>;
     getAdminDashboard(req: any): Promise<{
-        lastUpdate: Date;
         overview: {
-            myArticles: {
-                total: number;
-                last: import("../articles/entities/article.entity").Article;
-            };
-            lastMedia: import("../media/entities/media.entity").Media;
+            counts: {
+                title: string;
+                value: number;
+                change: string;
+                trend: string;
+                icon: string;
+                color: string;
+            }[];
+            recent: {
+                title: string;
+                type: string;
+                action: string;
+                time: Date;
+            }[];
         };
     }>;
 }

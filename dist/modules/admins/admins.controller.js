@@ -33,14 +33,14 @@ let AdminsController = class AdminsController {
     findOne(id, req) {
         const user = req.user;
         if (user.type !== 'super_admin' && user.id !== id) {
-            throw new common_1.ForbiddenException('You can only access your own profile');
+            throw new common_1.ForbiddenException('Vous pouvez seulement accéder à votre profil');
         }
         return this.adminsService.findOne(id);
     }
     update(id, updateAdminDto, req) {
         const user = req.user;
         if (user.type !== 'super_admin' && user.id !== id) {
-            throw new common_1.ForbiddenException('You can only update your own profile');
+            throw new common_1.ForbiddenException('Vous pouvez seulement modifier votre propre profil');
         }
         return this.adminsService.update(id, updateAdminDto);
     }

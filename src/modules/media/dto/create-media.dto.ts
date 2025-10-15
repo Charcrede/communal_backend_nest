@@ -10,20 +10,30 @@ export class CreateMediaDto {
   @IsString()
   description?: string;
 
+  @IsOptional()
   @IsEnum(MediaType)
   type: MediaType;
 
+  @IsOptional()
   @IsString()
   @MaxLength(500)
   url: string;
 
+  @IsOptional()
+  @IsString()
+  @MaxLength(500)
+  youtubeUrl?: string;
+
+  @IsOptional()
   @IsString()
   @MaxLength(255)
   filename: string;
 
+  @IsOptional()
   @IsNumber()
   size: number;
-
+  
+  @IsOptional()
   @IsUUID()
   article_id: string;
 }

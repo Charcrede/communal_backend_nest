@@ -1,6 +1,7 @@
 import { Entity, Column, OneToMany } from 'typeorm';
 import { BaseEntity } from '@/common/entities/base.entity';
 import { Article } from '@/modules/articles/entities/article.entity';
+import { Media } from '@/modules/media/entities/media.entity';
 
 export enum AdminRole {
   ADMIN = 'admin',
@@ -27,6 +28,10 @@ export class Admin extends BaseEntity {
 
   @OneToMany(() => Article, (article) => article.creator)
   articles: Article[];
+
+
+  @OneToMany(() => Media, (media) => media.creator)
+  medias: Media[];
 
   isAdmin(): boolean {
     return this.role === AdminRole.ADMIN || this.role === AdminRole.SUPER_ADMIN;

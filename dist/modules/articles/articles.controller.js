@@ -55,7 +55,7 @@ let ArticlesController = ArticlesController_1 = class ArticlesController {
                     url: `/uploads/${file.filename}`,
                     size: file.size,
                     article_id: article.id,
-                });
+                }, req.user.id);
                 try {
                     const filePath = (0, path_1.join)(process.cwd(), 'uploads', file.filename);
                     const uploadResult = await cloudinary_1.v2.uploader.upload(filePath, {
@@ -81,6 +81,9 @@ let ArticlesController = ArticlesController_1 = class ArticlesController {
     }
     findByRubric(rubricId) {
         return this.articlesService.findByRubric(rubricId);
+    }
+    findByTitle(title) {
+        return this.articlesService.findByTitle(title);
     }
     findOne(id) {
         return this.articlesService.findOne(id);
@@ -137,6 +140,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], ArticlesController.prototype, "findByRubric", null);
+__decorate([
+    (0, common_1.Get)(':title'),
+    __param(0, (0, common_1.Param)('title')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], ArticlesController.prototype, "findByTitle", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

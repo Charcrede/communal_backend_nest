@@ -18,9 +18,11 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const article_entity_1 = require("./entities/article.entity");
 const rubrics_service_1 = require("../rubrics/rubrics.service");
+const media_service_1 = require("../media/media.service");
 let ArticlesService = class ArticlesService {
-    constructor(articlesRepository, rubricsService) {
+    constructor(articlesRepository, mediaService, rubricsService) {
         this.articlesRepository = articlesRepository;
+        this.mediaService = mediaService;
         this.rubricsService = rubricsService;
     }
     async create(createArticleDto, createdBy) {
@@ -103,10 +105,16 @@ let ArticlesService = class ArticlesService {
             order: { created_at: 'DESC' },
         });
     }
+    async findByTitle(title) {
+        return this.articlesRepository.findOne({
+            where: { title: title },
+            relations: ['rubric', 'creator', 'media'],
+        });
+    }
     async update(id, updateArticleDto, userId) {
         const article = await this.findOne(id);
         if (article.created_by !== userId) {
-            throw new common_1.ForbiddenException('You can only update your own articles');
+            throw new common_1.ForbiddenException('Vous pouvez seulement modifier vos propres articles');
         }
         if (updateArticleDto.rubric_id) {
             await this.rubricsService.findOne(updateArticleDto.rubric_id);
@@ -117,8 +125,9 @@ let ArticlesService = class ArticlesService {
     async remove(id, userId) {
         const article = await this.findOne(id);
         if (article.created_by !== userId) {
-            throw new common_1.ForbiddenException('You can only delete your own articles');
+            throw new common_1.ForbiddenException('Vous pouvez seulement supprimer vos propres articles');
         }
+        await this.mediaService.removeByArticleId(article.id);
         const result = await this.articlesRepository.delete(id);
         if (result.affected === 0) {
             throw new common_1.NotFoundException('Article not found');
@@ -130,6 +139,7 @@ exports.ArticlesService = ArticlesService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(article_entity_1.Article)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        media_service_1.MediaService,
         rubrics_service_1.RubricsService])
 ], ArticlesService);
 //# sourceMappingURL=articles.service.js.map

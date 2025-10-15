@@ -80,7 +80,7 @@ export class ArticlesController {
           url: `/uploads/${file.filename}`, // URL locale pour le moment
           size: file.size,
           article_id: article.id,
-        });
+        }, req.user.id);
 
         // 3️⃣ Upload sur Cloudinary avec le nom de fichier BDD
         try {
@@ -122,6 +122,11 @@ export class ArticlesController {
   @Get('by-rubric/:rubricId')
   findByRubric(@Param('rubricId') rubricId: string) {
     return this.articlesService.findByRubric(rubricId);
+  }
+
+  @Get(':title')
+  findByTitle(@Param('title') title: string) {
+    return this.articlesService.findByTitle(title);
   }
 
   @Get(':id')

@@ -13,6 +13,7 @@ exports.Media = exports.MediaType = void 0;
 const typeorm_1 = require("typeorm");
 const base_entity_1 = require("../../../common/entities/base.entity");
 const article_entity_1 = require("../../articles/entities/article.entity");
+const admin_entity_1 = require("../../admins/entities/admin.entity");
 var MediaType;
 (function (MediaType) {
     MediaType["IMAGE"] = "image";
@@ -42,6 +43,10 @@ __decorate([
     __metadata("design:type", String)
 ], Media.prototype, "url", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ length: 500, default: null, nullable: true }),
+    __metadata("design:type", String)
+], Media.prototype, "youtubeUrl", void 0);
+__decorate([
     (0, typeorm_1.Column)({ length: 255 }),
     __metadata("design:type", String)
 ], Media.prototype, "filename", void 0);
@@ -50,9 +55,18 @@ __decorate([
     __metadata("design:type", Number)
 ], Media.prototype, "size", void 0);
 __decorate([
-    (0, typeorm_1.Column)('uuid'),
+    (0, typeorm_1.Column)('uuid', { default: null, nullable: true }),
     __metadata("design:type", String)
 ], Media.prototype, "article_id", void 0);
+__decorate([
+    (0, typeorm_1.Column)('uuid'),
+    __metadata("design:type", String)
+], Media.prototype, "created_by", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => admin_entity_1.Admin, (admin) => admin.medias),
+    (0, typeorm_1.JoinColumn)({ name: 'created_by' }),
+    __metadata("design:type", admin_entity_1.Admin)
+], Media.prototype, "creator", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => article_entity_1.Article, (article) => article.media),
     (0, typeorm_1.JoinColumn)({ name: 'article_id' }),

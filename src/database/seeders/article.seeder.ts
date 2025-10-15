@@ -42,6 +42,7 @@ export class ArticleSeeder {
       const article = this.articleRepository.create({
         title,
         content: `Voici un article détaillé sur : ${title}.`,
+        head: `Introduction à ${title}`,
         rubric,
         created_by: userId,
       });
@@ -64,6 +65,7 @@ export class ArticleSeeder {
           title: `Media illustrant ${title}`,
           description: `Un média pour ${title}`,
           type,
+          created_by: userId,
           filename: fileName,
           url: `${fileName}`,
           size: Math.floor(Math.random() * (500000 - 50000) + 50000),

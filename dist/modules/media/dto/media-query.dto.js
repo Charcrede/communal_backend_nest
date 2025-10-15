@@ -9,31 +9,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateArticleDto = void 0;
+exports.ArticleQueryDto = void 0;
 const class_validator_1 = require("class-validator");
-class CreateArticleDto {
+const pagination_dto_1 = require("../../../common/dto/pagination.dto");
+class ArticleQueryDto extends pagination_dto_1.PaginationDto {
 }
-exports.CreateArticleDto = CreateArticleDto;
+exports.ArticleQueryDto = ArticleQueryDto;
 __decorate([
+    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.MaxLength)(255),
     __metadata("design:type", String)
-], CreateArticleDto.prototype, "title", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.MaxLength)(255),
-    __metadata("design:type", String)
-], CreateArticleDto.prototype, "head", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateArticleDto.prototype, "content", void 0);
-__decorate([
-    (0, class_validator_1.IsUUID)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateArticleDto.prototype, "rubric_id", void 0);
-//# sourceMappingURL=create-article.dto.js.map
+], ArticleQueryDto.prototype, "search", void 0);
+//# sourceMappingURL=media-query.dto.js.map

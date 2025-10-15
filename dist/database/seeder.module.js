@@ -16,6 +16,8 @@ const article_entity_1 = require("../modules/articles/entities/article.entity");
 const rubric_seeder_1 = require("./seeders/rubric.seeder");
 const article_seeder_1 = require("./seeders/article.seeder");
 const media_entity_1 = require("../modules/media/entities/media.entity");
+const media_seeder_1 = require("./seeders/media.seeder");
+const media_service_1 = require("../modules/media/media.service");
 let SeedersModule = class SeedersModule {
 };
 exports.SeedersModule = SeedersModule;
@@ -28,6 +30,8 @@ exports.SeedersModule = SeedersModule = __decorate([
             seeder_service_1.SeederService,
             rubric_seeder_1.RubricSeeder,
             article_seeder_1.ArticleSeeder,
+            media_seeder_1.MediaSeeder,
+            media_service_1.MediaService,
         ],
         exports: [seeder_service_1.SeederService],
     })
