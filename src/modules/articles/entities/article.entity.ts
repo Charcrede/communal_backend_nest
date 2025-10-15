@@ -6,7 +6,7 @@
 
   @Entity('articles')
   export class Article extends BaseEntity {
-    @Column('text')
+    @Column({ length: 2000 })
     title: string;
 
     @Column('text')
@@ -15,7 +15,7 @@
     @Column('uuid')
     rubric_id: string;
 
-    @Column('text')
+    @Column({ length: 2000 })
     head: string;
 
     @Column('uuid')
