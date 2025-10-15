@@ -148,7 +148,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], ArticlesController.prototype, "findByTitle", null);
 __decorate([
-    (0, common_1.Get)(':id'),
+    (0, common_1.Get)('id/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

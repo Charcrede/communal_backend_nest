@@ -102,7 +102,7 @@ export class ArticlesService {
 
   async findOne(id: string): Promise<Article> {
     const article = await this.articlesRepository.findOne({
-      where: { id },
+      where: { id: id },
       relations: ['rubric', 'creator', 'media'],
     });
 

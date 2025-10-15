@@ -129,7 +129,7 @@ export class ArticlesController {
     return this.articlesService.findByTitle(title);
   }
 
-  @Get(':id')
+  @Get('id/:id')
   findOne(@Param('id') id: string) {
     return this.articlesService.findOne(id);
   }
