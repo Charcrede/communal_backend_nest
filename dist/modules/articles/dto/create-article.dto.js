@@ -17,13 +17,13 @@ exports.CreateArticleDto = CreateArticleDto;
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.MaxLength)(255),
+    (0, class_validator_1.MaxLength)(2000),
     __metadata("design:type", String)
 ], CreateArticleDto.prototype, "title", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.MaxLength)(255),
+    (0, class_validator_1.MaxLength)(2000),
     __metadata("design:type", String)
 ], CreateArticleDto.prototype, "head", void 0);
 __decorate([

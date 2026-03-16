@@ -20,7 +20,7 @@ export class Admin extends BaseEntity {
   password: string;
 
   @Column({
-    type: 'varchar',
+    type: 'enum',
     enum: AdminRole,
     default: AdminRole.ADMIN,
   })

@@ -28,7 +28,7 @@ let DatabaseConfig = class DatabaseConfig {
             };
         }
         return {
-            type: 'postgres',
+            type: 'mysql',
             host: this.configService.get('DATABASE_HOST'),
             port: this.configService.get('DATABASE_PORT'),
             username: this.configService.get('DATABASE_USERNAME'),

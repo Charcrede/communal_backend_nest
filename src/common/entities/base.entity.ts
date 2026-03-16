@@ -5,14 +5,14 @@ export abstract class BaseEntity {
   id: string;
 
 @CreateDateColumn({
-  type: 'timestamptz', // ou 'timestamp' si tu veux sans fuseau horaire
-  default: () => 'CURRENT_TIMESTAMP',
+  // type: 'timestamptz', // postgres
+  type: 'datetime', // mysql
 })
 created_at: Date;
 
   @UpdateDateColumn({
-     type: 'timestamptz', // ou 'timestamp' si tu veux sans fuseau horaire
-  default: () => 'CURRENT_TIMESTAMP',
+    // type: 'timestamptz', // postgres
+    type: 'datetime', // mysql
   })
   updated_at: Date;
 }

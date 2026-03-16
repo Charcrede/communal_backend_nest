@@ -19,7 +19,7 @@ let Article = class Article extends base_entity_1.BaseEntity {
 };
 exports.Article = Article;
 __decorate([
-    (0, typeorm_1.Column)({ length: 255 }),
+    (0, typeorm_1.Column)({ length: 2000 }),
     __metadata("design:type", String)
 ], Article.prototype, "title", void 0);
 __decorate([
@@ -31,7 +31,7 @@ __decorate([
     __metadata("design:type", String)
 ], Article.prototype, "rubric_id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ length: 255 }),
+    (0, typeorm_1.Column)({ length: 2000 }),
     __metadata("design:type", String)
 ], Article.prototype, "head", void 0);
 __decorate([

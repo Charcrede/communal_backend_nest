@@ -33,7 +33,7 @@ __decorate([
 ], Media.prototype, "description", void 0);
 __decorate([
     (0, typeorm_1.Column)({
-        type: 'varchar',
+        type: 'enum',
         enum: MediaType,
     }),
     __metadata("design:type", String)

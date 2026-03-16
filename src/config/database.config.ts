@@ -19,15 +19,27 @@ export class DatabaseConfig implements TypeOrmOptionsFactory {
       };
     }
 
+    // return {
+    //   type: 'postgres',
+    //   host: this.configService.get<string>('DATABASE_HOST'),
+    //   port: this.configService.get<number>('DATABASE_PORT'),
+    //   username: this.configService.get<string>('DATABASE_USERNAME'),
+    //   password: this.configService.get<string>('DATABASE_PASSWORD'),
+    //   database: this.configService.get<string>('DATABASE_NAME'),
+    //   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+    //   synchronize: false,
+    //   logging: true,
+    // };
+
     return {
-      type: 'postgres',
+      type: 'mysql',
       host: this.configService.get<string>('DATABASE_HOST'),
       port: this.configService.get<number>('DATABASE_PORT'),
       username: this.configService.get<string>('DATABASE_USERNAME'),
       password: this.configService.get<string>('DATABASE_PASSWORD'),
       database: this.configService.get<string>('DATABASE_NAME'),
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-      synchronize: false,
+      synchronize: true,
       logging: true,
     };
   }

@@ -39,14 +39,14 @@ async function bootstrap() {
 
   // CORS
   app.enableCors({
-    origin: ['http://localhost:3001', 'http://localhost:3002', 'https://communal-info-web-tv.vercel.app', 'https://communal-admin.vercel.app'], // ou "*" en dev
+    origin: ['http://localhost:3000', 'http://localhost:3001', 'https://communal-info-web-tv.vercel.app', 'https://communal-admin.vercel.app'], // ou "*" en dev
     credentials: true,
   });
 
   const dataSource = app.get(DataSource);
 
 
-  const port = configService.get<number>('PORT') || 3000;
+  const port = configService.get<number>('PORT') || 4000;
   await app.listen(port);
 
   console.log(`🚀 Server running on http://localhost:${port}`);

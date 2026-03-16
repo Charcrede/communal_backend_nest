@@ -18,7 +18,7 @@ export class Media extends BaseEntity {
   description: string;
 
   @Column({
-    type: 'varchar',
+    type: 'enum',
     enum: MediaType,
   })
   type: MediaType;

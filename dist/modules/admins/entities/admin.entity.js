@@ -42,7 +42,7 @@ __decorate([
 ], Admin.prototype, "password", void 0);
 __decorate([
     (0, typeorm_1.Column)({
-        type: 'varchar',
+        type: 'enum',
         enum: AdminRole,
         default: AdminRole.ADMIN,
     }),
