@@ -42,7 +42,7 @@ export class DatabaseConfig implements TypeOrmOptionsFactory {
       rejectUnauthorized: true, 
       },
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-      synchronize: false,
+      synchronize: true,
       logging: true,
     };
   }
