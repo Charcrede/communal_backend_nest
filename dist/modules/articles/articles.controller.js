@@ -45,7 +45,6 @@ let ArticlesController = ArticlesController_1 = class ArticlesController {
             for (const [i, file] of files.entries()) {
                 const media = await this.mediaService.create({
                     title: file.originalname,
-                    description: `Média n°${i + 1} pour l'article ${article.title}`,
                     type: file.mimetype.startsWith('image/')
                         ? media_entity_1.MediaType.IMAGE
                         : file.mimetype.startsWith('video/')

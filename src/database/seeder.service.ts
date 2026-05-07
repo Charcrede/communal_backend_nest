@@ -6,7 +6,6 @@ import * as bcrypt from 'bcrypt';
 import { Admin, AdminRole } from '@/modules/admins/entities/admin.entity';
 import { RubricSeeder } from './seeders/rubric.seeder';
 import { ArticleSeeder } from './seeders/article.seeder';
-import { MediaSeeder } from './seeders/media.seeder';
 
 @Injectable()
 export class SeederService {
@@ -17,7 +16,6 @@ export class SeederService {
     private readonly adminRepository: Repository<Admin>,
     private readonly rubricSeeder: RubricSeeder,
     private readonly articleSeeder: ArticleSeeder,
-    private readonly mediaSeeder: MediaSeeder,
   ) {}
 
   /**

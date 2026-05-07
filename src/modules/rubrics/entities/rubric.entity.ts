@@ -2,6 +2,7 @@ import { Entity, Column, OneToMany, BeforeInsert, BeforeUpdate } from 'typeorm';
 import slugify from 'slugify';
 import { BaseEntity } from '@/common/entities/base.entity';
 import { Article } from '@/modules/articles/entities/article.entity';
+import { Media } from '@/modules/media/entities/media.entity';
 
 @Entity('rubrics')
 export class Rubric extends BaseEntity {
@@ -16,6 +17,9 @@ export class Rubric extends BaseEntity {
 
   @OneToMany(() => Article, (article) => article.rubric)
   articles: Article[];
+
+  @OneToMany(() => Media, (media) => media.rubric)
+  medias: Media[];
 
   @BeforeInsert()
   @BeforeUpdate()

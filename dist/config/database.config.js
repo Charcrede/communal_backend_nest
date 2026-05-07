@@ -34,6 +34,9 @@ let DatabaseConfig = class DatabaseConfig {
             username: this.configService.get('DATABASE_USERNAME'),
             password: this.configService.get('DATABASE_PASSWORD'),
             database: this.configService.get('DATABASE_NAME'),
+            ssl: {
+                rejectUnauthorized: true,
+            },
             entities: [__dirname + '/../**/*.entity{.ts,.js}'],
             synchronize: true,
             logging: true,

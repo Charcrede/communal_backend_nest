@@ -7,10 +7,6 @@ export class CreateMediaDto {
   title: string;
 
   @IsOptional()
-  @IsString()
-  description?: string;
-
-  @IsOptional()
   @IsEnum(MediaType)
   type: MediaType;
 

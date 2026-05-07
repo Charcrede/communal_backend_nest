@@ -53,9 +53,6 @@ export class MediaController {
       createMediaDto.filename = `youtube-${Date.now()}.txt`;
       createMediaDto.size = 0;
 
-      if (!createMediaDto.description) {
-        createMediaDto.description = `Vidéo YouTube : ${createMediaDto.youtubeUrl}`;
-      }
 
       const media = await this.mediaService.create(createMediaDto, userId);
       return media;
@@ -73,9 +70,6 @@ export class MediaController {
       ? MediaType.VIDEO
       : MediaType.AUDIO;
 
-    if (!createMediaDto.description) {
-      createMediaDto.description = `Fichier ${file.originalname}`;
-    }
 
     const media = await this.mediaService.create(createMediaDto, userId);
 

@@ -73,9 +73,6 @@ let MediaController = class MediaController {
             createMediaDto.type = media_entity_1.MediaType.VIDEO;
             createMediaDto.filename = `youtube-${Date.now()}.txt`;
             createMediaDto.size = 0;
-            if (!createMediaDto.description) {
-                createMediaDto.description = `Vidéo YouTube : ${createMediaDto.youtubeUrl}`;
-            }
             const media = await this.mediaService.create(createMediaDto, userId);
             return media;
         }
@@ -89,9 +86,6 @@ let MediaController = class MediaController {
             : file.mimetype.startsWith('video/')
                 ? media_entity_1.MediaType.VIDEO
                 : media_entity_1.MediaType.AUDIO;
-        if (!createMediaDto.description) {
-            createMediaDto.description = `Fichier ${file.originalname}`;
-        }
         const media = await this.mediaService.create(createMediaDto, userId);
         try {
             const filePath = (0, path_1.join)(process.cwd(), 'uploads', file.filename);

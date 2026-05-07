@@ -54,25 +54,23 @@ const bcrypt = __importStar(require("bcrypt"));
 const admin_entity_1 = require("../modules/admins/entities/admin.entity");
 const rubric_seeder_1 = require("./seeders/rubric.seeder");
 const article_seeder_1 = require("./seeders/article.seeder");
-const media_seeder_1 = require("./seeders/media.seeder");
 let SeederService = SeederService_1 = class SeederService {
-    constructor(adminRepository, rubricSeeder, articleSeeder, mediaSeeder) {
+    constructor(adminRepository, rubricSeeder, articleSeeder) {
         this.adminRepository = adminRepository;
         this.rubricSeeder = rubricSeeder;
         this.articleSeeder = articleSeeder;
-        this.mediaSeeder = mediaSeeder;
         this.logger = new common_1.Logger(SeederService_1.name);
     }
     async seed() {
-        this.logger.log('🚀 Démarrage du seed initial...');
+        this.logger.log(' Démarrage du seed initial...');
         await this.seedSuperAdmin();
-        this.logger.log('✅ Seed initial terminé.');
+        this.logger.log(' Seed initial terminé.');
     }
     async seedSuperAdmin() {
         const email = 'superadmin@communal.com';
         let superAdmin = await this.adminRepository.findOne({ where: { email } });
         if (superAdmin) {
-            this.logger.log('Super admin déjà présent ✅');
+            this.logger.log('Super admin déjà présent');
         }
         else {
             const hashedPassword = await bcrypt.hash('Testing10@', 10);
@@ -83,12 +81,10 @@ let SeederService = SeederService_1 = class SeederService {
                 role: admin_entity_1.AdminRole.SUPER_ADMIN,
             });
             superAdmin = await this.adminRepository.save(newSuperAdmin);
-            this.logger.log('Super admin créé avec succès 🚀');
+            this.logger.log('Super admin créé avec succès');
         }
         const rubrics = await this.rubricSeeder.seed();
-        await this.articleSeeder.seed(rubrics, superAdmin.id);
-        await this.mediaSeeder.seed(superAdmin.id);
-        this.logger.log('Articles seedés avec succès ✨');
+        this.logger.log('Articles seedés avec succès');
     }
 };
 exports.SeederService = SeederService;
@@ -97,7 +93,6 @@ exports.SeederService = SeederService = SeederService_1 = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(admin_entity_1.Admin)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
         rubric_seeder_1.RubricSeeder,
-        article_seeder_1.ArticleSeeder,
-        media_seeder_1.MediaSeeder])
+        article_seeder_1.ArticleSeeder])
 ], SeederService);
 //# sourceMappingURL=seeder.service.js.map

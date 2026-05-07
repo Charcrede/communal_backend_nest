@@ -22,11 +22,6 @@ __decorate([
 ], CreateMediaDto.prototype, "title", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], CreateMediaDto.prototype, "description", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsEnum)(media_entity_1.MediaType),
     __metadata("design:type", String)
 ], CreateMediaDto.prototype, "type", void 0);

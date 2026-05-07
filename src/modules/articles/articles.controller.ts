@@ -70,7 +70,6 @@ export class ArticlesController {
         // 2️⃣ Créer l'entité Média avec URL locale
         const media = await this.mediaService.create({
           title: file.originalname,
-          description: `Média n°${i + 1} pour l'article ${article.title}`,
           type: file.mimetype.startsWith('image/')
             ? MediaType.IMAGE
             : file.mimetype.startsWith('video/')

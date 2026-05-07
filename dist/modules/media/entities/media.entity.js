@@ -14,6 +14,7 @@ const typeorm_1 = require("typeorm");
 const base_entity_1 = require("../../../common/entities/base.entity");
 const article_entity_1 = require("../../articles/entities/article.entity");
 const admin_entity_1 = require("../../admins/entities/admin.entity");
+const rubric_entity_1 = require("../../rubrics/entities/rubric.entity");
 var MediaType;
 (function (MediaType) {
     MediaType["IMAGE"] = "image";
@@ -28,7 +29,7 @@ __decorate([
     __metadata("design:type", String)
 ], Media.prototype, "title", void 0);
 __decorate([
-    (0, typeorm_1.Column)('text', { nullable: true }),
+    (0, typeorm_1.Column)('text', { default: null, nullable: true }),
     __metadata("design:type", String)
 ], Media.prototype, "description", void 0);
 __decorate([
@@ -59,6 +60,10 @@ __decorate([
     __metadata("design:type", String)
 ], Media.prototype, "article_id", void 0);
 __decorate([
+    (0, typeorm_1.Column)('uuid', { default: null, nullable: true }),
+    __metadata("design:type", String)
+], Media.prototype, "rubric_id", void 0);
+__decorate([
     (0, typeorm_1.Column)('uuid'),
     __metadata("design:type", String)
 ], Media.prototype, "created_by", void 0);
@@ -67,6 +72,11 @@ __decorate([
     (0, typeorm_1.JoinColumn)({ name: 'created_by' }),
     __metadata("design:type", admin_entity_1.Admin)
 ], Media.prototype, "creator", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => rubric_entity_1.Rubric, (rubric) => rubric.medias),
+    (0, typeorm_1.JoinColumn)({ name: 'created_by' }),
+    __metadata("design:type", rubric_entity_1.Rubric)
+], Media.prototype, "rubric", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => article_entity_1.Article, (article) => article.media),
     (0, typeorm_1.JoinColumn)({ name: 'article_id' }),

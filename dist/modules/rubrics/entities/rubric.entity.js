@@ -17,6 +17,7 @@ const typeorm_1 = require("typeorm");
 const slugify_1 = __importDefault(require("slugify"));
 const base_entity_1 = require("../../../common/entities/base.entity");
 const article_entity_1 = require("../../articles/entities/article.entity");
+const media_entity_1 = require("../../media/entities/media.entity");
 let Rubric = class Rubric extends base_entity_1.BaseEntity {
     generateSlug() {
         if (this.name) {
@@ -41,6 +42,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => article_entity_1.Article, (article) => article.rubric),
     __metadata("design:type", Array)
 ], Rubric.prototype, "articles", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => media_entity_1.Media, (media) => media.rubric),
+    __metadata("design:type", Array)
+], Rubric.prototype, "medias", void 0);
 __decorate([
     (0, typeorm_1.BeforeInsert)(),
     (0, typeorm_1.BeforeUpdate)(),
