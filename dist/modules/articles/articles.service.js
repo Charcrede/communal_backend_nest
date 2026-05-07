@@ -100,7 +100,9 @@ let ArticlesService = class ArticlesService {
         }
         return article;
     }
-    async findByRubric(rubricId) {
+    async findByRubric(rubric_slug) {
+        const rubric = await this.rubricsService.findOneBySlug(rubric_slug);
+        const rubricId = rubric.id;
         const articles = await this.articlesRepository.find({
             where: { rubric_id: rubricId },
             relations: ['rubric', 'creator', 'media'],

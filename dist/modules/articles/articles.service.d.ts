@@ -17,7 +17,7 @@ export declare class ArticlesService {
     findAll(queryDto: ArticleQueryDto): Promise<PaginatedResult<Article>>;
     search(query: string, page?: number, per_page?: number): Promise<PaginatedResult<Article>>;
     findOne(id: string): Promise<Article>;
-    findByRubric(rubricId: string): Promise<{
+    findByRubric(rubric_slug: string): Promise<{
         articles: Article[];
         media: Media[];
     }>;

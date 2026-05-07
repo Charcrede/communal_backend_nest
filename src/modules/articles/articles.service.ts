@@ -116,7 +116,9 @@ export class ArticlesService {
     return article;
   }
 
-  async findByRubric(rubricId: string): Promise<{ articles: Article[], media: Media[] }> {
+  async findByRubric(rubric_slug: string): Promise<{ articles: Article[], media: Media[] }> {
+    const rubric = await this.rubricsService.findOneBySlug(rubric_slug);
+    const rubricId = rubric.id;
     const articles = await this.articlesRepository.find({
       where: { rubric_id: rubricId },
       relations: ['rubric', 'creator', 'media'],

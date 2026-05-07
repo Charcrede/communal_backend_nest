@@ -53,6 +53,16 @@ let RubricsService = RubricsService_1 = class RubricsService {
         }
         return rubric;
     }
+    async findOneBySlug(slug) {
+        const rubric = await this.rubricsRepository.findOne({
+            where: { slug },
+            relations: ['articles', 'articles.creator', 'articles.media'],
+        });
+        if (!rubric) {
+            throw new common_1.NotFoundException('Rubric not found');
+        }
+        return rubric;
+    }
     async update(id, updateRubricDto) {
         const rubric = await this.findOne(id);
         Object.assign(rubric, updateRubricDto);

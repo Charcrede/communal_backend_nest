@@ -46,6 +46,18 @@ export class RubricsService {
     
     return rubric;
   }
+  async findOneBySlug(slug: string): Promise<Rubric> {
+    const rubric = await this.rubricsRepository.findOne({
+      where: { slug },
+      relations: ['articles', 'articles.creator', 'articles.media'],
+    });
+    
+    if (!rubric) {
+      throw new NotFoundException('Rubric not found');
+    }
+    
+    return rubric;
+  }
 
   async update(id: string, updateRubricDto: UpdateRubricDto): Promise<Rubric> {
     const rubric = await this.findOne(id);

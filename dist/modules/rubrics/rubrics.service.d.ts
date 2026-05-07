@@ -9,6 +9,7 @@ export declare class RubricsService {
     create(createRubricDto: CreateRubricDto): Promise<Rubric>;
     findAll(): Promise<Rubric[]>;
     findOne(id: string): Promise<Rubric>;
+    findOneBySlug(slug: string): Promise<Rubric>;
     update(id: string, updateRubricDto: UpdateRubricDto): Promise<Rubric>;
     remove(id: string): Promise<void>;
 }
