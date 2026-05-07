@@ -20,9 +20,6 @@ export class RubricsService {
     try {
       return await this.rubricsRepository.save(rubric);
     } catch (error) {
-      if (error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
-        throw new ConflictException('Rubric with this name already exists');
-      }
       throw error;
     }
   }
@@ -67,9 +64,6 @@ export class RubricsService {
     try {
       return await this.rubricsRepository.save(rubric);
     } catch (error) {
-      if (error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
-        throw new ConflictException('Rubric with this name already exists');
-      }
       throw error;
     }
   }

@@ -5,10 +5,12 @@ import { ArticlesController } from './articles.controller';
 import { Article } from './entities/article.entity';
 import { RubricsModule } from '../rubrics/rubrics.module';
 import { MediaModule } from '../media/media.module';
+import { Media } from '../media/entities/media.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Article]),
+    TypeOrmModule.forFeature([Media]),
     RubricsModule,
     MediaModule,
   ],

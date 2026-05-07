@@ -31,9 +31,6 @@ let RubricsService = RubricsService_1 = class RubricsService {
             return await this.rubricsRepository.save(rubric);
         }
         catch (error) {
-            if (error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
-                throw new common_1.ConflictException('Rubric with this name already exists');
-            }
             throw error;
         }
     }
@@ -70,9 +67,6 @@ let RubricsService = RubricsService_1 = class RubricsService {
             return await this.rubricsRepository.save(rubric);
         }
         catch (error) {
-            if (error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
-                throw new common_1.ConflictException('Rubric with this name already exists');
-            }
             throw error;
         }
     }

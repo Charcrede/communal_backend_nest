@@ -14,6 +14,7 @@ const articles_controller_1 = require("./articles.controller");
 const article_entity_1 = require("./entities/article.entity");
 const rubrics_module_1 = require("../rubrics/rubrics.module");
 const media_module_1 = require("../media/media.module");
+const media_entity_1 = require("../media/entities/media.entity");
 let ArticlesModule = class ArticlesModule {
 };
 exports.ArticlesModule = ArticlesModule;
@@ -21,6 +22,7 @@ exports.ArticlesModule = ArticlesModule = __decorate([
     (0, common_1.Module)({
         imports: [
             typeorm_1.TypeOrmModule.forFeature([article_entity_1.Article]),
+            typeorm_1.TypeOrmModule.forFeature([media_entity_1.Media]),
             rubrics_module_1.RubricsModule,
             media_module_1.MediaModule,
         ],
