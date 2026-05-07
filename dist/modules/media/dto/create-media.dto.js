@@ -53,4 +53,9 @@ __decorate([
     (0, class_validator_1.IsUUID)(),
     __metadata("design:type", String)
 ], CreateMediaDto.prototype, "article_id", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsUUID)(),
+    __metadata("design:type", String)
+], CreateMediaDto.prototype, "rubric_id", void 0);
 //# sourceMappingURL=create-media.dto.js.map

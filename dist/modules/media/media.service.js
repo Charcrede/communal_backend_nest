@@ -29,7 +29,7 @@ let MediaService = class MediaService {
     }
     async findAll() {
         return this.mediaRepository.find({
-            relations: ['article'],
+            relations: ['article', 'rubric'],
             order: { created_at: 'DESC' },
         });
     }
@@ -47,7 +47,7 @@ let MediaService = class MediaService {
                 { title: (0, typeorm_2.Like)(`%${query}%`) },
                 { description: (0, typeorm_2.Like)(`%${query}%`) },
             ],
-            relations: ['creator'],
+            relations: ['creator', 'rubric'],
             order: { created_at: 'DESC' },
             skip: (page - 1) * per_page,
             take: per_page,
@@ -80,7 +80,7 @@ let MediaService = class MediaService {
     async findOne(id) {
         const media = await this.mediaRepository.findOne({
             where: { id },
-            relations: ['article'],
+            relations: ['article', 'rubric'],
         });
         if (!media) {
             throw new common_1.NotFoundException('Media not found');

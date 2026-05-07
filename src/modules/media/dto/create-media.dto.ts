@@ -31,5 +31,9 @@ export class CreateMediaDto {
   
   @IsOptional()
   @IsUUID()
-  article_id: string;
+  article_id?: string;
+
+  @IsOptional()
+  @IsUUID()
+  rubric_id?: string;
 }

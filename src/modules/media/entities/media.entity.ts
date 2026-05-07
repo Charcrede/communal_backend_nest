@@ -50,7 +50,7 @@ export class Media extends BaseEntity {
   creator: Admin;
 
   @ManyToOne(() => Rubric, (rubric) => rubric.medias)
-  @JoinColumn({ name: 'created_by' })
+  @JoinColumn({ name: 'rubric_id' })
   rubric: Rubric;
 
   @ManyToOne(() => Article, (article) => article.media)

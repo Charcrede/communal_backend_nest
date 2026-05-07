@@ -74,7 +74,7 @@ __decorate([
 ], Media.prototype, "creator", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => rubric_entity_1.Rubric, (rubric) => rubric.medias),
-    (0, typeorm_1.JoinColumn)({ name: 'created_by' }),
+    (0, typeorm_1.JoinColumn)({ name: 'rubric_id' }),
     __metadata("design:type", rubric_entity_1.Rubric)
 ], Media.prototype, "rubric", void 0);
 __decorate([

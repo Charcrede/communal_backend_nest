@@ -6,5 +6,6 @@ export declare class CreateMediaDto {
     youtubeUrl?: string;
     filename: string;
     size: number;
-    article_id: string;
+    article_id?: string;
+    rubric_id?: string;
 }

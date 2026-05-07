@@ -23,7 +23,7 @@ export class MediaService {
 
   async findAll(): Promise<Media[]> {
     return this.mediaRepository.find({
-      relations: ['article'],
+      relations: ['article', 'rubric'],
       order: { created_at: 'DESC' },
     });
   }
@@ -44,7 +44,7 @@ export class MediaService {
         { title: Like(`%${query}%`) },
         { description: Like(`%${query}%`) },
       ],
-      relations: ['creator'],
+      relations: ['creator', 'rubric'],
       order: { created_at: 'DESC' },
       skip: (page - 1) * per_page,
       take: per_page,
@@ -82,7 +82,7 @@ export class MediaService {
   async findOne(id: string): Promise<Media> {
     const media = await this.mediaRepository.findOne({
       where: { id },
-      relations: ['article'],
+      relations: ['article', 'rubric'],
     });
 
     if (!media) {
