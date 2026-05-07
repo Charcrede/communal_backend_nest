@@ -19,9 +19,11 @@ const typeorm_2 = require("typeorm");
 const article_entity_1 = require("./entities/article.entity");
 const rubrics_service_1 = require("../rubrics/rubrics.service");
 const media_service_1 = require("../media/media.service");
+const media_entity_1 = require("../media/entities/media.entity");
 let ArticlesService = class ArticlesService {
-    constructor(articlesRepository, mediaService, rubricsService) {
+    constructor(articlesRepository, mediaRepository, mediaService, rubricsService) {
         this.articlesRepository = articlesRepository;
+        this.mediaRepository = mediaRepository;
         this.mediaService = mediaService;
         this.rubricsService = rubricsService;
     }
@@ -99,11 +101,17 @@ let ArticlesService = class ArticlesService {
         return article;
     }
     async findByRubric(rubricId) {
-        return this.articlesRepository.find({
+        const articles = await this.articlesRepository.find({
             where: { rubric_id: rubricId },
             relations: ['rubric', 'creator', 'media'],
             order: { created_at: 'DESC' },
         });
+        const media = await this.mediaRepository.find({
+            where: { rubric_id: rubricId, article_id: null },
+            relations: ['rubric', 'creator'],
+            order: { created_at: 'DESC' },
+        });
+        return { articles, media };
     }
     async findByTitle(title) {
         return this.articlesRepository.findOne({
@@ -138,7 +146,9 @@ exports.ArticlesService = ArticlesService;
 exports.ArticlesService = ArticlesService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(article_entity_1.Article)),
+    __param(1, (0, typeorm_1.InjectRepository)(media_entity_1.Media)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         media_service_1.MediaService,
         rubrics_service_1.RubricsService])
 ], ArticlesService);

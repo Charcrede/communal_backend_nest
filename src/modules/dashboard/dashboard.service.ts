@@ -3,9 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Rubric } from '../rubrics/entities/rubric.entity';
 import { Article } from '../articles/entities/article.entity';
-import { Media } from '../media/entities/media.entity';
+import { Media, MediaType } from '../media/entities/media.entity';
 import { Admin, AdminRole } from '../admins/entities/admin.entity';
-import { Between, MoreThanOrEqual, LessThan } from 'typeorm';
+import { Between, MoreThanOrEqual, LessThan, Not, IsNull } from 'typeorm';
 import { subWeeks, startOfWeek, endOfWeek } from 'date-fns';
 import { last } from 'rxjs';
 
@@ -34,7 +34,12 @@ export class DashboardService {
     const [rubricsCount, articlesCount, mediasCount, adminsCount] = await Promise.all([
       this.rubricRepository.count(),
       this.articleRepository.count(),
-      this.mediaRepository.count(),
+      this.mediaRepository.count({
+        where: [
+          { article_id: Not(IsNull()) },
+          { article_id: IsNull(), rubric_id: Not(IsNull()), type: MediaType.VIDEO }
+        ]
+      }),
       this.adminRepository.count(),
     ]);
 
@@ -51,7 +56,10 @@ export class DashboardService {
         select: ['id', 'title', 'created_at'],
       }),
       this.mediaRepository.findOne({
-        where: {},
+        where: [
+          { article_id: Not(IsNull()) },
+          { article_id: IsNull(), rubric_id: Not(IsNull()), type: MediaType.VIDEO }
+        ],
         order: { created_at: 'DESC' },
         select: ['id', 'description', 'url', 'created_at'],
       }),
@@ -73,8 +81,18 @@ export class DashboardService {
     ] = await Promise.all([
       this.articleRepository.count({ where: { created_at: MoreThanOrEqual(startOfThisWeek) } }),
       this.articleRepository.count({ where: { created_at: Between(startOfLastWeek, endOfLastWeek) } }),
-      this.mediaRepository.count({ where: { created_at: MoreThanOrEqual(startOfThisWeek) } }),
-      this.mediaRepository.count({ where: { created_at: Between(startOfLastWeek, endOfLastWeek) } }),
+      this.mediaRepository.count({
+        where: [
+          { created_at: MoreThanOrEqual(startOfThisWeek), article_id: Not(IsNull()) },
+          { created_at: MoreThanOrEqual(startOfThisWeek), article_id: IsNull(), rubric_id: Not(IsNull()), type: MediaType.VIDEO }
+        ]
+      }),
+      this.mediaRepository.count({
+        where: [
+          { created_at: Between(startOfLastWeek, endOfLastWeek), article_id: Not(IsNull()) },
+          { created_at: Between(startOfLastWeek, endOfLastWeek), article_id: IsNull(), rubric_id: Not(IsNull()), type: MediaType.VIDEO }
+        ]
+      }),
       this.adminRepository.count({ where: { role: AdminRole.SUPER_ADMIN } }),
       this.adminRepository.count({ where: { role: AdminRole.ADMIN } }),
     ]);
@@ -176,7 +194,12 @@ export class DashboardService {
   // === COUNTS ===
   const [articlesCount, mediasCount] = await Promise.all([
     this.articleRepository.count({ where: { creator: { id: adminId } } }),
-    this.mediaRepository.count({ where: { creator: { id: adminId } } }),
+    this.mediaRepository.count({
+      where: [
+        { creator: { id: adminId }, article_id: Not(IsNull()) },
+        { creator: { id: adminId }, article_id: IsNull(), rubric_id: Not(IsNull()), type: MediaType.VIDEO }
+      ]
+    }),
   ]);
 
   // === WEEKLY COUNTS ===
@@ -194,16 +217,16 @@ export class DashboardService {
       },
     }),
     this.mediaRepository.count({
-      where: {
-        creator: { id: adminId },
-        created_at: MoreThanOrEqual(startOfThisWeek),
-      },
+      where: [
+        { creator: { id: adminId }, created_at: MoreThanOrEqual(startOfThisWeek), article_id: Not(IsNull()) },
+        { creator: { id: adminId }, created_at: MoreThanOrEqual(startOfThisWeek), article_id: IsNull(), rubric_id: Not(IsNull()), type: MediaType.VIDEO }
+      ]
     }),
     this.mediaRepository.count({
-      where: {
-        creator: { id: adminId },
-        created_at: Between(startOfLastWeek, endOfLastWeek),
-      },
+      where: [
+        { creator: { id: adminId }, created_at: Between(startOfLastWeek, endOfLastWeek), article_id: Not(IsNull()) },
+        { creator: { id: adminId }, created_at: Between(startOfLastWeek, endOfLastWeek), article_id: IsNull(), rubric_id: Not(IsNull()), type: MediaType.VIDEO }
+      ]
     }),
   ]);
 
@@ -225,7 +248,10 @@ export class DashboardService {
   });
 
   const recentMedias = await this.mediaRepository.find({
-    where: { creator: { id: adminId } },
+    where: [
+      { creator: { id: adminId }, article_id: Not(IsNull()) },
+      { creator: { id: adminId }, article_id: IsNull(), rubric_id: Not(IsNull()), type: MediaType.VIDEO }
+    ],
     order: { created_at: 'DESC' },
     take: 3,
     select: ['id', 'description', 'url', 'created_at'],

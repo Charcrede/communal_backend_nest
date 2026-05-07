@@ -8,12 +8,15 @@ import { ArticleQueryDto } from './dto/article-query.dto';
 import { PaginatedResult } from '@/common/dto/pagination.dto';
 import { RubricsService } from '../rubrics/rubrics.service';
 import { MediaService } from '../media/media.service';
+import { Media } from '../media/entities/media.entity';
 
 @Injectable()
 export class ArticlesService {
   constructor(
     @InjectRepository(Article)
     private articlesRepository: Repository<Article>,
+    @InjectRepository(Media)
+    private mediaRepository: Repository<Media>,
     private mediaService: MediaService,
     private rubricsService: RubricsService,
   ) {}
@@ -113,12 +116,20 @@ export class ArticlesService {
     return article;
   }
 
-  async findByRubric(rubricId: string): Promise<Article[]> {
-    return this.articlesRepository.find({
+  async findByRubric(rubricId: string): Promise<{ articles: Article[], media: Media[] }> {
+    const articles = await this.articlesRepository.find({
       where: { rubric_id: rubricId },
       relations: ['rubric', 'creator', 'media'],
       order: { created_at: 'DESC' },
     });
+
+    const media = await this.mediaRepository.find({
+      where: { rubric_id: rubricId, article_id: null },
+      relations: ['rubric', 'creator'],
+      order: { created_at: 'DESC' },
+    });
+
+    return { articles, media };
   }
 
 

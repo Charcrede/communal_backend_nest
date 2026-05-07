@@ -37,7 +37,12 @@ let DashboardService = class DashboardService {
         const [rubricsCount, articlesCount, mediasCount, adminsCount] = await Promise.all([
             this.rubricRepository.count(),
             this.articleRepository.count(),
-            this.mediaRepository.count(),
+            this.mediaRepository.count({
+                where: [
+                    { article_id: (0, typeorm_3.Not)((0, typeorm_3.IsNull)()) },
+                    { article_id: (0, typeorm_3.IsNull)(), rubric_id: (0, typeorm_3.Not)((0, typeorm_3.IsNull)()), type: media_entity_1.MediaType.VIDEO }
+                ]
+            }),
             this.adminRepository.count(),
         ]);
         const [lastRubric, lastArticle, lastMedia, lastAdmin] = await Promise.all([
@@ -52,7 +57,10 @@ let DashboardService = class DashboardService {
                 select: ['id', 'title', 'created_at'],
             }),
             this.mediaRepository.findOne({
-                where: {},
+                where: [
+                    { article_id: (0, typeorm_3.Not)((0, typeorm_3.IsNull)()) },
+                    { article_id: (0, typeorm_3.IsNull)(), rubric_id: (0, typeorm_3.Not)((0, typeorm_3.IsNull)()), type: media_entity_1.MediaType.VIDEO }
+                ],
                 order: { created_at: 'DESC' },
                 select: ['id', 'description', 'url', 'created_at'],
             }),
@@ -65,8 +73,18 @@ let DashboardService = class DashboardService {
         const [articlesThisWeek, articlesLastWeek, mediasThisWeek, mediasLastWeek, super_admins, admins,] = await Promise.all([
             this.articleRepository.count({ where: { created_at: (0, typeorm_3.MoreThanOrEqual)(startOfThisWeek) } }),
             this.articleRepository.count({ where: { created_at: (0, typeorm_3.Between)(startOfLastWeek, endOfLastWeek) } }),
-            this.mediaRepository.count({ where: { created_at: (0, typeorm_3.MoreThanOrEqual)(startOfThisWeek) } }),
-            this.mediaRepository.count({ where: { created_at: (0, typeorm_3.Between)(startOfLastWeek, endOfLastWeek) } }),
+            this.mediaRepository.count({
+                where: [
+                    { created_at: (0, typeorm_3.MoreThanOrEqual)(startOfThisWeek), article_id: (0, typeorm_3.Not)((0, typeorm_3.IsNull)()) },
+                    { created_at: (0, typeorm_3.MoreThanOrEqual)(startOfThisWeek), article_id: (0, typeorm_3.IsNull)(), rubric_id: (0, typeorm_3.Not)((0, typeorm_3.IsNull)()), type: media_entity_1.MediaType.VIDEO }
+                ]
+            }),
+            this.mediaRepository.count({
+                where: [
+                    { created_at: (0, typeorm_3.Between)(startOfLastWeek, endOfLastWeek), article_id: (0, typeorm_3.Not)((0, typeorm_3.IsNull)()) },
+                    { created_at: (0, typeorm_3.Between)(startOfLastWeek, endOfLastWeek), article_id: (0, typeorm_3.IsNull)(), rubric_id: (0, typeorm_3.Not)((0, typeorm_3.IsNull)()), type: media_entity_1.MediaType.VIDEO }
+                ]
+            }),
             this.adminRepository.count({ where: { role: admin_entity_1.AdminRole.SUPER_ADMIN } }),
             this.adminRepository.count({ where: { role: admin_entity_1.AdminRole.ADMIN } }),
         ]);
@@ -158,7 +176,12 @@ let DashboardService = class DashboardService {
         const endOfLastWeek = (0, date_fns_1.endOfWeek)(startOfLastWeek, { weekStartsOn: 1 });
         const [articlesCount, mediasCount] = await Promise.all([
             this.articleRepository.count({ where: { creator: { id: adminId } } }),
-            this.mediaRepository.count({ where: { creator: { id: adminId } } }),
+            this.mediaRepository.count({
+                where: [
+                    { creator: { id: adminId }, article_id: (0, typeorm_3.Not)((0, typeorm_3.IsNull)()) },
+                    { creator: { id: adminId }, article_id: (0, typeorm_3.IsNull)(), rubric_id: (0, typeorm_3.Not)((0, typeorm_3.IsNull)()), type: media_entity_1.MediaType.VIDEO }
+                ]
+            }),
         ]);
         const [articlesThisWeek, articlesLastWeek, mediasThisWeek, mediasLastWeek] = await Promise.all([
             this.articleRepository.count({
@@ -174,16 +197,16 @@ let DashboardService = class DashboardService {
                 },
             }),
             this.mediaRepository.count({
-                where: {
-                    creator: { id: adminId },
-                    created_at: (0, typeorm_3.MoreThanOrEqual)(startOfThisWeek),
-                },
+                where: [
+                    { creator: { id: adminId }, created_at: (0, typeorm_3.MoreThanOrEqual)(startOfThisWeek), article_id: (0, typeorm_3.Not)((0, typeorm_3.IsNull)()) },
+                    { creator: { id: adminId }, created_at: (0, typeorm_3.MoreThanOrEqual)(startOfThisWeek), article_id: (0, typeorm_3.IsNull)(), rubric_id: (0, typeorm_3.Not)((0, typeorm_3.IsNull)()), type: media_entity_1.MediaType.VIDEO }
+                ]
             }),
             this.mediaRepository.count({
-                where: {
-                    creator: { id: adminId },
-                    created_at: (0, typeorm_3.Between)(startOfLastWeek, endOfLastWeek),
-                },
+                where: [
+                    { creator: { id: adminId }, created_at: (0, typeorm_3.Between)(startOfLastWeek, endOfLastWeek), article_id: (0, typeorm_3.Not)((0, typeorm_3.IsNull)()) },
+                    { creator: { id: adminId }, created_at: (0, typeorm_3.Between)(startOfLastWeek, endOfLastWeek), article_id: (0, typeorm_3.IsNull)(), rubric_id: (0, typeorm_3.Not)((0, typeorm_3.IsNull)()), type: media_entity_1.MediaType.VIDEO }
+                ]
             }),
         ]);
         const getTrend = (thisWeek, lastWeek) => {
@@ -202,7 +225,10 @@ let DashboardService = class DashboardService {
             select: ['id', 'title', 'created_at'],
         });
         const recentMedias = await this.mediaRepository.find({
-            where: { creator: { id: adminId } },
+            where: [
+                { creator: { id: adminId }, article_id: (0, typeorm_3.Not)((0, typeorm_3.IsNull)()) },
+                { creator: { id: adminId }, article_id: (0, typeorm_3.IsNull)(), rubric_id: (0, typeorm_3.Not)((0, typeorm_3.IsNull)()), type: media_entity_1.MediaType.VIDEO }
+            ],
             order: { created_at: 'DESC' },
             take: 3,
             select: ['id', 'description', 'url', 'created_at'],

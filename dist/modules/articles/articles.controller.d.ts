@@ -11,7 +11,10 @@ export declare class ArticlesController {
     create(createArticleDto: CreateArticleDto, files: Express.Multer.File[], req: any): Promise<import("./entities/article.entity").Article>;
     findAll(queryDto: ArticleQueryDto): Promise<import("../../common/dto/pagination.dto").PaginatedResult<import("./entities/article.entity").Article>>;
     search(search: string, page?: number, per_page?: number): Promise<import("../../common/dto/pagination.dto").PaginatedResult<import("./entities/article.entity").Article>>;
-    findByRubric(rubricId: string): Promise<import("./entities/article.entity").Article[]>;
+    findByRubric(rubricId: string): Promise<{
+        articles: import("./entities/article.entity").Article[];
+        media: import("../media/entities/media.entity").Media[];
+    }>;
     findByTitle(title: string): Promise<import("./entities/article.entity").Article>;
     findOne(id: string): Promise<import("./entities/article.entity").Article>;
     update(id: string, updateArticleDto: UpdateArticleDto, req: any): Promise<import("./entities/article.entity").Article>;
