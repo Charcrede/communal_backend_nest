@@ -24,9 +24,9 @@ export class SeederService {
    * Point d'entrée principal du seed
    */
   async seed() {
-    this.logger.log('🚀 Démarrage du seed initial...');
+    this.logger.log(' Démarrage du seed initial...');
     await this.seedSuperAdmin();
-    this.logger.log('✅ Seed initial terminé.');
+    this.logger.log(' Seed initial terminé.');
   }
 
   /**
@@ -38,7 +38,7 @@ export class SeederService {
     let superAdmin = await this.adminRepository.findOne({ where: { email } });
 
     if (superAdmin) {
-      this.logger.log('Super admin déjà présent ✅');
+      this.logger.log('Super admin déjà présent');
     } else {
       const hashedPassword = await bcrypt.hash('Testing10@', 10);
 
@@ -50,17 +50,17 @@ export class SeederService {
       });
 
       superAdmin = await this.adminRepository.save(newSuperAdmin);
-      this.logger.log('Super admin créé avec succès 🚀');
+      this.logger.log('Super admin créé avec succès');
     }
 
     // Seeder les rubriques
     const rubrics = await this.rubricSeeder.seed();
 
     // Seeder les articles liés au super admin
-    await this.articleSeeder.seed(rubrics, superAdmin.id);
+    // await this.articleSeeder.seed(rubrics, superAdmin.id);
 
-    await this.mediaSeeder.seed(superAdmin.id);
+    // await this.mediaSeeder.seed(superAdmin.id);
 
-    this.logger.log('Articles seedés avec succès ✨');
+    this.logger.log('Articles seedés avec succès');
   }
 }
