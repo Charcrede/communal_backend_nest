@@ -118,9 +118,9 @@ export class ArticlesController {
     return this.articlesService.search(search, +page, +per_page);
   }
 
-  @Get('by-rubric/:rubricId')
-  findByRubric(@Param('rubricId') rubricId: string) {
-    return this.articlesService.findByRubric(rubricId);
+  @Get('by-rubric/:rubric')
+  findByRubric(@Param('rubric') rubric: string) {
+    return this.articlesService.findByRubric(rubric);
   }
 
   @Get(':title')

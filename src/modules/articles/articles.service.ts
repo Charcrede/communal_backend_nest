@@ -5,7 +5,7 @@ import { Article } from './entities/article.entity';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { ArticleQueryDto } from './dto/article-query.dto';
-import { PaginatedResult } from '@/common/dto/pagination.dto';
+import { PaginatedResult, PaginatedResultWithMedia } from '@/common/dto/pagination.dto';
 import { RubricsService } from '../rubrics/rubrics.service';
 import { MediaService } from '../media/media.service';
 import { Media } from '../media/entities/media.entity';
@@ -33,7 +33,7 @@ export class ArticlesService {
     return this.articlesRepository.save(article);
   }
 
-  async findAll(queryDto: ArticleQueryDto): Promise<PaginatedResult<Article>> {
+  async findAll(queryDto: ArticleQueryDto): Promise<PaginatedResultWithMedia<Article, Media>> {
     const { page = 1, per_page = 10, rubric, rubric_id, exclude_rubric, exclude_rubric_id, search } = queryDto;
 
     const queryBuilder = this.articlesRepository
@@ -73,8 +73,23 @@ export class ArticlesService {
       .take(per_page)
       .getMany();
 
+    const mediaWhere: any = { article_id: null };
+    if (rubric_id) {
+      mediaWhere.rubric_id = rubric_id;
+    } else if (rubric) {
+      const rubricEntity = await this.rubricsService.findOneBySlug(rubric);
+      mediaWhere.rubric_id = rubricEntity.id;
+    }
+
+    const media = await this.mediaRepository.find({
+      where: mediaWhere,
+      relations: ['rubric', 'creator'],
+      order: { created_at: 'DESC' },
+    });
+
     return {
       data: articles,
+      media,
       total,
       page,
       per_page,

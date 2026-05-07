@@ -63,8 +63,22 @@ let ArticlesService = class ArticlesService {
             .skip((page - 1) * per_page)
             .take(per_page)
             .getMany();
+        const mediaWhere = { article_id: null };
+        if (rubric_id) {
+            mediaWhere.rubric_id = rubric_id;
+        }
+        else if (rubric) {
+            const rubricEntity = await this.rubricsService.findOneBySlug(rubric);
+            mediaWhere.rubric_id = rubricEntity.id;
+        }
+        const media = await this.mediaRepository.find({
+            where: mediaWhere,
+            relations: ['rubric', 'creator'],
+            order: { created_at: 'DESC' },
+        });
         return {
             data: articles,
+            media,
             total,
             page,
             per_page,

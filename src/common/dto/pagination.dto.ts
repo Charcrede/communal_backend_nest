@@ -23,3 +23,7 @@ export interface PaginatedResult<T> {
   per_page: number;
   total_pages: number;
 }
+
+export interface PaginatedResultWithMedia<T, M> extends PaginatedResult<T> {
+  media: M[];
+}

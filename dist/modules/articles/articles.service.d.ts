@@ -3,7 +3,7 @@ import { Article } from './entities/article.entity';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { ArticleQueryDto } from './dto/article-query.dto';
-import { PaginatedResult } from '@/common/dto/pagination.dto';
+import { PaginatedResult, PaginatedResultWithMedia } from '@/common/dto/pagination.dto';
 import { RubricsService } from '../rubrics/rubrics.service';
 import { MediaService } from '../media/media.service';
 import { Media } from '../media/entities/media.entity';
@@ -14,7 +14,7 @@ export declare class ArticlesService {
     private rubricsService;
     constructor(articlesRepository: Repository<Article>, mediaRepository: Repository<Media>, mediaService: MediaService, rubricsService: RubricsService);
     create(createArticleDto: CreateArticleDto, createdBy: string): Promise<Article>;
-    findAll(queryDto: ArticleQueryDto): Promise<PaginatedResult<Article>>;
+    findAll(queryDto: ArticleQueryDto): Promise<PaginatedResultWithMedia<Article, Media>>;
     search(query: string, page?: number, per_page?: number): Promise<PaginatedResult<Article>>;
     findOne(id: string): Promise<Article>;
     findByRubric(rubric_slug: string): Promise<{

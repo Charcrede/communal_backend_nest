@@ -78,8 +78,8 @@ let ArticlesController = ArticlesController_1 = class ArticlesController {
     search(search, page = 1, per_page = 10) {
         return this.articlesService.search(search, +page, +per_page);
     }
-    findByRubric(rubricId) {
-        return this.articlesService.findByRubric(rubricId);
+    findByRubric(rubric) {
+        return this.articlesService.findByRubric(rubric);
     }
     findByTitle(title) {
         return this.articlesService.findByTitle(title);
@@ -133,8 +133,8 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], ArticlesController.prototype, "search", null);
 __decorate([
-    (0, common_1.Get)('by-rubric/:rubricId'),
-    __param(0, (0, common_1.Param)('rubricId')),
+    (0, common_1.Get)('by-rubric/:rubric'),
+    __param(0, (0, common_1.Param)('rubric')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
